@@ -3,12 +3,15 @@ defmodule Dots.Game do
 
   defstruct board: nil, players: [], turns: [], current_player: 0, completed: false, score: %{}
 
-  def start([players: players, width: width, height: height]) do
-    %__MODULE__{
-      players: players,
+  def new do
+    %__MODULE__{}
+  end
+
+  def start(game \\ %__MODULE__{}, players: players, width: width, height: height) do
+    %{game |
+      players: players ++ game.players,
       board: Dots.Board.new(width: width, height: height),
-      turns: Stream.cycle(players)
-    }
+      turns: Stream.cycle(players ++ game.players)}
   end
 
   def current_player(game) do
