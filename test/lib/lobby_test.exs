@@ -9,6 +9,15 @@ defmodule Dots.LobbyTest do
     assert lobby.game.players |> length == 2
   end
 
+  test ".remove_player removes a player from the game" do
+    lobby = Dots.Lobby.new
+            |> Dots.Lobby.add_player("Joe")
+            |> Dots.Lobby.add_player("Jane")
+            |> Dots.Lobby.remove_player("Joe")
+
+    assert lobby.game.players == ["Jane"]
+  end
+
   test ".start starts the game" do
     lobby = Dots.Lobby.new
 

@@ -10,6 +10,11 @@ defmodule Dots.Lobby do
       game: %{game | players: game.players ++ [player]}}
   end
 
+  def remove_player(%{game: game} = lobby, player) do
+    %{lobby |
+      game: %{game | players: game.players |> List.delete(player)}}
+  end
+
   def choose_dimensions(lobby, width, height) do
     %{lobby | width: width, height: height}
   end
