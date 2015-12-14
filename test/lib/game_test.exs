@@ -3,6 +3,7 @@ defmodule Dots.GameTest do
 
   test ".start starts a game" do
     game = Dots.Game.start(players: ["Joe", "Erin", "Amy"], width: 2, height: 2)
+    assert game.turns |> length == 12
 
     assert game |> Dots.Game.current_player == "Joe"
 

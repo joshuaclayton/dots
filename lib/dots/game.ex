@@ -11,7 +11,8 @@ defmodule Dots.Game do
     %{game |
       players: players ++ game.players,
       board: Dots.Board.new(width: width, height: height),
-      turns: Stream.cycle(players ++ game.players)}
+      turns: Stream.cycle(players ++ game.players) |> Enum.take((2*width+1)*height+width)
+    }
   end
 
   def current_player(game) do
