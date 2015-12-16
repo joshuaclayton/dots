@@ -41,6 +41,9 @@ defmodule Dots.GameTest do
              |> Dots.Game.claim(0, 0, "Left")
 
     assert result.completed == true
-    assert result.score == %{"Erin" => 1, "Joe" => 0}
+    assert result.score == %{
+      scores: %{"Erin" => 1, "Joe" => 0},
+      winners: ["Erin"]
+    }
   end
 end

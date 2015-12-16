@@ -1,5 +1,24 @@
 defmodule Dots.GameScorer do
   def score(game, board) do
+    %{
+      scores: scores(game, board),
+      winners: winners(game, board)
+    }
+  end
+
+  defp winners(game, board) do
+    scores(game, board)
+    |> Enum.group_by(fn {_name, score} -> score end)
+    |> Enum.max_by(fn {score, _players} -> score end)
+    |> extract_scores
+  end
+
+  defp extract_scores({_top_score, players}) do
+    players
+    |> Enum.map(fn {name, _score} -> name end)
+  end
+
+  defp scores(game, board) do
     game.players
     |> Enum.reduce(Map.new, &default_score/2)
     |> Map.merge(score_board(board))
