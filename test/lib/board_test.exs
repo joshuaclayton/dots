@@ -40,4 +40,22 @@ defmodule Dots.BoardTest do
 
     assert updated_board |> Dots.Board.is_completed? == true
   end
+
+  test ".claim sorts squares" do
+    {:ok, updated_board} = Dots.Board.new(width: 3, height: 3)
+                           |> Dots.Board.claim(%Dots.Coordinate{x: 1, y: 0}, %{player: "Erin", position: "Left"})
+                           |> Dots.Board.claim(%Dots.Coordinate{x: 2, y: 2}, %{player: "Erin", position: "Right"})
+
+    assert updated_board.squares == [
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 0, y: 0}, claims: [%{player: "Erin", position: "Right"}]},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 1, y: 0}, claims: [%{player: "Erin", position: "Left"}]},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 2, y: 0}, claims: []},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 0, y: 1}, claims: []},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 1, y: 1}, claims: []},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 2, y: 1}, claims: []},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 0, y: 2}, claims: []},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 1, y: 2}, claims: []},
+      %Dots.Square{coordinates: %Dots.Coordinate{x: 2, y: 2}, claims: [%{player: "Erin", position: "Right"}]}
+    ]
+  end
 end

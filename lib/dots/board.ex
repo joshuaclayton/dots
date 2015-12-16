@@ -36,6 +36,7 @@ defmodule Dots.Board do
 
     new_squares = board
                   |> squares_without_coordinates([primary_square, secondary_square] |> Enum.reject fn(x) -> is_nil(x) end)
+                  |> sort_squares
 
     {
       final_result([primary_result, secondary_result]),
@@ -69,6 +70,22 @@ defmodule Dots.Board do
         |> Enum.member? square.coordinates
       end
     ) ++ removed_squares
+  end
+
+  defp sort_squares(squares) do
+    squares
+    |> Enum.group_by(fn square -> square.coordinates.y end)
+    |> Enum.map(fn {y, squares_array} ->
+      %{}
+      |> Map.put(y,
+        squares_array |> Enum.sort(fn a, b ->
+          a.coordinates.x <= b.coordinates.x
+        end)
+      )
+    end)
+    |> Enum.reduce(&Map.merge/2)
+    |> Map.values
+    |> List.flatten
   end
 
   defp build_square(x, y) do
