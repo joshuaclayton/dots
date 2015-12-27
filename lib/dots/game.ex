@@ -19,6 +19,10 @@ defmodule Dots.Game do
     game.turns |> Enum.at(game.current_player)
   end
 
+  def players_names(game) do
+    game.players |> Enum.map &(&1.name)
+  end
+
   def claim(%{completed: true, score: score}, _, _, _) do
     IO.puts "Game is done!"
     IO.inspect score
