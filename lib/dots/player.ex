@@ -1,5 +1,5 @@
 defmodule Dots.Player do
-  defstruct id: 0, name: "New player"
+  defstruct id: 0, name: "New player", active: true
 
   def new(player_name) when is_binary(player_name) do
     new(%{name: player_name, id: generate_id})

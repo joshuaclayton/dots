@@ -10,7 +10,7 @@ defmodule Dots.LobbyTest do
     assert lobby.game.players |> length == 3
   end
 
-  test ".remove_player removes a player from the game" do
+  test ".remove_player updates a player's game state" do
     lobby = Dots.Lobby.new
             |> Dots.Lobby.add_player("Joe")
             |> Dots.Lobby.add_player(%{name: "Jim", id: "abc-def"})
@@ -18,7 +18,22 @@ defmodule Dots.LobbyTest do
             |> Dots.Lobby.remove_player("abc-def")
             |> Dots.Lobby.remove_player("Jane")
 
-    assert Dots.Game.players_names(lobby.game) == ["Joe"]
+    active_players = lobby.game.players |> Enum.filter(fn player -> player.active end)
+    assert Dots.Game.players_names(active_players) == ["Joe"]
+
+    inactive_players = lobby.game.players |> Enum.filter(fn player -> !player.active end)
+    assert Dots.Game.players_names(inactive_players) == ["Jim", "Jane"]
+  end
+
+  test ".rejoin_player updates a player's game state" do
+    lobby = Dots.Lobby.new
+            |> Dots.Lobby.add_player("Joe")
+            |> Dots.Lobby.add_player(%{name: "Jim", id: "abc-def"})
+            |> Dots.Lobby.remove_player("abc-def")
+            |> Dots.Lobby.rejoin_player("abc-def")
+
+    active_players = lobby.game.players |> Enum.filter(fn player -> player.active end)
+    assert Dots.Game.players_names(active_players) == ["Joe", "Jim"]
   end
 
   test ".start starts the game" do
