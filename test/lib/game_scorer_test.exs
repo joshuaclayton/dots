@@ -18,6 +18,21 @@ defmodule Dots.GameScorerTest do
     }
   end
 
+  test ".score removes unnecessary data" do
+    {_, board} = Dots.Board.new(width: 2, height: 2)
+    |> claim(0, 0, "Josh")
+    |> claim(1, 0, "Josh")
+
+    game = %{players: ["Josh", "Joe"]}
+    assert Dots.GameScorer.score(game, board) == %{
+      winners: ["Josh"],
+      scores: %{
+        "Josh" => 2,
+        "Joe" => 0
+      }
+    }
+  end
+
   defp claim({_result, board}, x, y, player), do: claim(board, x, y, player)
   defp claim(board, x, y, player) do
     coordinates = %Dots.Coordinate{x: x, y: y}

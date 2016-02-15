@@ -32,7 +32,10 @@ defmodule Dots.GameScorer do
     board.squares
     |> Enum.reduce(Map.new, fn(%{completed_by: completed_by}, result) ->
       value = Dict.get result, completed_by, 0
-      Dict.put result, completed_by, value + 1
+      case completed_by do
+        nil -> result
+        _ -> Dict.put result, completed_by, value + 1
+      end
     end)
   end
 end
