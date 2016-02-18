@@ -35,7 +35,7 @@ defmodule Dots.Lobby do
       player.name == identifier || player.id == identifier
     end)
 
-    players |> List.update_at(player_index, fn player -> %{player | active: false} end)
+    update_player_state_at_index players, %{ active: false }, player_index
   end
 
   defp mark_players_active_by_identifier(players, identifier) do
@@ -43,11 +43,11 @@ defmodule Dots.Lobby do
       player.name == identifier || player.id == identifier
     end)
 
-    mark_player_active_at_index players, player_index
+    update_player_state_at_index players, %{ active: true }, player_index
   end
 
-  defp mark_player_active_at_index(players, nil), do: players
-  defp mark_player_active_at_index(players, player_index) do
-    players |> List.update_at(player_index, fn player -> %{player | active: true} end)
+  defp update_player_state_at_index(players, _, nil), do: players
+  defp update_player_state_at_index(players, state, player_index) do
+    players |> List.update_at(player_index, fn player -> Map.merge(player, state) end)
   end
 end
