@@ -43,6 +43,11 @@ defmodule Dots.Lobby do
       player.name == identifier || player.id == identifier
     end)
 
+    mark_player_active_at_index players, player_index
+  end
+
+  defp mark_player_active_at_index(players, nil), do: players
+  defp mark_player_active_at_index(players, player_index) do
     players |> List.update_at(player_index, fn player -> %{player | active: true} end)
   end
 end

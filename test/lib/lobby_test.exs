@@ -31,6 +31,7 @@ defmodule Dots.LobbyTest do
             |> Dots.Lobby.add_player(%{name: "Jim", id: "abc-def"})
             |> Dots.Lobby.remove_player("abc-def")
             |> Dots.Lobby.rejoin_player("abc-def")
+            |> Dots.Lobby.rejoin_player("non-existent-player")
 
     active_players = lobby.game.players |> Enum.filter(fn player -> player.active end)
     assert Dots.Game.players_names(active_players) == ["Joe", "Jim"]
